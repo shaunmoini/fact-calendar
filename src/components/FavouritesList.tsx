@@ -1,3 +1,4 @@
+import React from 'react';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -11,7 +12,6 @@ type FavouritesListProps = {
 }
 
 const FavouritesList = ({ data, itemOnClick }: FavouritesListProps) => {
-
   const listStyle = {
     flex: 1,
     width: '85%',
@@ -31,15 +31,12 @@ const FavouritesList = ({ data, itemOnClick }: FavouritesListProps) => {
   } as const;
 
   return (
-    <List
-      sx={listStyle}
-      subheader={<ListSubheader>{'Favourite Facts'}</ListSubheader>}
-    >
+    <List sx={listStyle} subheader={<ListSubheader>{'Favourite Facts'}</ListSubheader>}>
       {data.map((value) => (
         <ListItem
           key={value}
           sx={listItemStyle}
-          secondaryAction={<IconButton sx={{color: '#2979ff'}} onClick={() => itemOnClick(value)}><CancelIcon /></IconButton>}
+          secondaryAction={<IconButton sx={{ color: '#2979ff' }} onClick={() => itemOnClick(value)}><CancelIcon /></IconButton>}
         >
           <ListItemText primary={value} />
         </ListItem>
@@ -48,4 +45,4 @@ const FavouritesList = ({ data, itemOnClick }: FavouritesListProps) => {
   );
 }
 
-export default FavouritesList;
+export default React.memo(FavouritesList);
