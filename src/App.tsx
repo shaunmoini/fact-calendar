@@ -4,11 +4,13 @@ import TextField from '@mui/material/TextField';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { StaticDatePicker } from '@mui/x-date-pickers/StaticDatePicker';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import StarIcon from '@mui/icons-material/Star';
+import CancelIcon from '@mui/icons-material/Cancel';
 
-import FavouriteButton from './components/FavouriteButton';
-
-// import type {} from '@mui/x-date-pickers/themeAugmentation';
-// import type {} from '@mui/x-date-pickers-pro/themeAugmentation';
+import CustomButton from './components/CustomButton';
+import FavouritesList from './components/FavouritesList';
 import './css/app.css';
 
 const App = () => {
@@ -28,7 +30,23 @@ const App = () => {
   const addToFavourites = (): void => {
     if (!favouriteFacts.includes(currentFact!)) {
       setFavouriteFacts(favouriteFacts => [...favouriteFacts, currentFact!]);
+      toast.info('Fact saved to favourites')
     }
+    else {
+      toast.info('Fact already saved to favourites')
+    }
+  }
+
+  // removes a selected fact from favourites list
+  const removeFromFavourites = (item: string): void => {
+    setFavouriteFacts(favouriteFacts.filter(((fact) => { return fact !== item })));
+    toast.info('Fact removed from favourites');
+  }
+
+  // clears favourites list
+  const clearFavourites = (): void => {
+    setFavouriteFacts([]);
+    toast.info('Favourite facts cleared');
   }
 
   return (
@@ -44,10 +62,12 @@ const App = () => {
         />
       </LocalizationProvider>
       <div id='factContainer'>
-        <p>{currentFact}</p>
-        <FavouriteButton onClick={addToFavourites}></FavouriteButton>
+        <span>{currentFact}</span>
+        <CustomButton text={'Favourite'} icon={<StarIcon />}onClick={addToFavourites}></CustomButton>
       </div>
-      {/* <p style={{color: 'white', flex: 0.6, textAlign:'center'}}>{favouriteFacts}</p> */}
+      <FavouritesList data={favouriteFacts} itemOnClick={removeFromFavourites} />
+      <CustomButton text={'Clear Favourites'} icon={<CancelIcon />}onClick={clearFavourites}></CustomButton>
+      <ToastContainer />
     </div>
   );
 }
