@@ -1,8 +1,10 @@
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import StarIcon from '@mui/icons-material/Star';
 import CancelIcon from '@mui/icons-material/Cancel';
+import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -46,6 +48,20 @@ const App = () => {
     toast.info('Favourite facts cleared');
   }, []);
 
+  // download favourite facts as a text file
+  const saveFavouriteFacts = () => {
+    if (favouriteFacts.length > 0) {
+      let textDoc = document.createElement('a');
+      textDoc.href = 'data:attachment/text,' + encodeURI(favouriteFacts.join('\n'));
+      textDoc.download = 'favouriteFacts.txt';
+      textDoc.click();
+      toast.info('Favourite facts downloaded');
+    }
+    else {
+      toast.info('No facts have been favourited yet');
+    }
+  }
+
   return (
     <div id='flex-container'>
       <h1 id='title'>Fact Calendar</h1>
@@ -60,12 +76,14 @@ const App = () => {
         </Button>
       </div>
       <FavouritesList data={favouriteFacts} itemOnClick={removeFromFavourites} />
-      <Button
-        variant="contained"
-        endIcon={<CancelIcon />}
-        onClick={clearFavourites}>
-        Clear Favourites
-      </Button>
+      <ButtonGroup variant="contained" aria-label="outlined primary button group">
+        <Button endIcon={<CancelIcon />} onClick={clearFavourites}>
+          Clear Favourites
+        </Button>
+        <Button endIcon={<DownloadForOfflineIcon />} onClick={saveFavouriteFacts}>
+          Download Favourites
+        </Button>
+      </ButtonGroup>
       <ToastContainer />
     </div>
   );
