@@ -27,12 +27,17 @@ const App = () => {
 
   // adds current fact to list of favourite facts
   const addToFavourites = React.useCallback((): void => {
-    if (!favouriteFacts.includes(currentFact!)) {
-      setFavouriteFacts(favouriteFacts => [...favouriteFacts, currentFact!]);
-      toast.info('Fact saved to favourites');
+    if (currentFact) {
+      if (!favouriteFacts.includes(currentFact!)) {
+        setFavouriteFacts(favouriteFacts => [...favouriteFacts, currentFact!]);
+        toast.info('Fact saved to favourites');
+      }
+      else {
+        toast.info('Fact already saved to favourites');
+      }
     }
     else {
-      toast.info('Fact already saved to favourites');
+      toast.info('Fact unavailable');
     }
   }, [currentFact, favouriteFacts]);
 
